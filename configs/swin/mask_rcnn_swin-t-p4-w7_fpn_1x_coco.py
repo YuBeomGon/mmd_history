@@ -1,9 +1,13 @@
 _base_ = [
-    '../_base_/models/mask_rcnn_r50_fpn.py',
+    '../_base_/models/faster_rcnn_r50_fpn.py',
     '../_base_/datasets/coco_instance.py',
     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
 ]
 pretrained = 'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth'  # noqa
+# 'https://download.openmmlab.com/mmdetection/v2.0/mask_rcnn/mask_rcnn_r50_caffe_fpn_mstrain-poly_3x_coco/mask_rcnn_r50_caffe_fpn_mstrain-poly_3x_coco_bbox_mAP-0.408__segm_mAP-0.37_20200504_163245-42aa3d00.pth'
+load_from = 'pretrained/mask_rcnn_swin_tiny_patch4_window7_1x.pth'
+# load_from = 'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth'
+
 model = dict(
     type='MaskRCNN',
     backbone=dict(
@@ -23,7 +27,8 @@ model = dict(
         out_indices=(0, 1, 2, 3),
         with_cp=False,
         convert_weights=True,
-        init_cfg=dict(type='Pretrained', checkpoint=pretrained)),
+        # init_cfg=dict(type='Pretrained', checkpoint=pretrained)
+    ),
     neck=dict(in_channels=[96, 192, 384, 768]))
 
 optimizer = dict(
@@ -38,5 +43,6 @@ optimizer = dict(
             'relative_position_bias_table': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)
         }))
-lr_config = dict(warmup_iters=1000, step=[8, 11])
-runner = dict(max_epochs=12)
+lr_config = dict(warmup_iters=1000, step=[8, 16])
+runner = dict(max_epochs=24)
+

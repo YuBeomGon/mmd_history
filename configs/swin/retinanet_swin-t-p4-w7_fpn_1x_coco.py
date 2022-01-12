@@ -3,7 +3,9 @@ _base_ = [
     '../_base_/datasets/coco_detection.py',
     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
 ]
-pretrained = 'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth'  # noqa
+# pretrained = 'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_tiny_patch4_window7_224.pth'  # noqa
+# pretrained = 'pretrained/swin_tiny_patch4_window7_224.pth'
+load_from = 'pretrained/swin_tiny_patch4_window7_224.pth'
 model = dict(
     backbone=dict(
         _delete_=True,
@@ -23,7 +25,8 @@ model = dict(
         # Please only add indices that would be used
         # in FPN, otherwise some parameter will not be used
         with_cp=False,
-        init_cfg=dict(type='Pretrained', checkpoint=pretrained)),
+        # init_cfg=dict(type='Pretrained', checkpoint=pretrained)
+    ),
     neck=dict(in_channels=[192, 384, 768], start_level=0, num_outs=5))
 
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.002, momentum=0.9, weight_decay=0.0001)

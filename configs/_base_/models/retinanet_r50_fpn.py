@@ -10,7 +10,8 @@ model = dict(
         norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=True,
         style='pytorch',
-        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')),
+        # init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')
+    ),
     neck=dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
@@ -20,7 +21,7 @@ model = dict(
         num_outs=5),
     bbox_head=dict(
         type='RetinaHead',
-        num_classes=80,
+        num_classes=2,
         in_channels=256,
         stacked_convs=4,
         feat_channels=256,
@@ -30,6 +31,7 @@ model = dict(
             scales_per_octave=3,
             ratios=[0.5, 1.0, 2.0],
             strides=[8, 16, 32, 64, 128]),
+            # strides=[16, 32, 64, 128, 256]),
         bbox_coder=dict(
             type='DeltaXYWHBBoxCoder',
             target_means=[.0, .0, .0, .0],
